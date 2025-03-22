@@ -140,7 +140,7 @@ const mostrarFiltro = () => {
 
         div.innerHTML = `
                 <div class="header-card">
-                    <img src="./public/assets/${items.img}" alt="${items.titulo}">
+                    <img src="public/assets/${items.img}" alt="${items.titulo}">
                         <div>
                             <h1>${items.titulo}</h1>
                             <strong class="">Precio: <span>${precioFormateado.replace(',00','')}</span></strong>
@@ -249,7 +249,7 @@ function viewCart(){
 
 
         div.innerHTML = `
-            <img src="./public/assets/${items.img}" alt="icon">
+            <img src="public/assets/${items.img}" alt="icon">
                 <div class="headerCart">
                     <h1>${items.titulo}</h1>
                     <span>Cantidad: ${items.cantidad}</span>
