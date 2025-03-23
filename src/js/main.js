@@ -15,6 +15,8 @@ const buttonArticulo = document.querySelector('#articulos')
 const modalDetalles = document.querySelector('.modalDetalles')
 const toastMessage = document.querySelector('.toastMessage')
 
+const totalCarrito = document.querySelector('#total')
+const cerrarCarrito = document.querySelector('#cerrarCarrito')
 let ExistingToCart = false
 let carrito = []
 
@@ -116,7 +118,10 @@ contentDetalles.addEventListener('click', (e) =>{
     }
 })
 
-
+cerrarCarrito.addEventListener('click',(e)=>{
+    e.stopPropagation()
+    cartModal.classList.add('ocultarCarrito')
+})
 
 buttonArticulo.addEventListener('click', (e)=>{
     e.stopPropagation()
@@ -312,6 +317,18 @@ function viewCart(){
         return prev + item.cantidad
     },0)
 
+    //Obtenemos el total sumando el total de cada artiuclo
+    const totalCart = carrito.reduce((totalAnt, totalAct) =>{
+        return totalAnt + totalAct.precio * totalAct.cantidad //-> retornamos el total
+    }, 0)
+
+    //formateo el precio en la moneda local
+    const precioFormateado = new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: 'ARS', 
+      }).format(totalCart)
+;
+    totalCarrito.textContent = precioFormateado.replace(',00',"")
     //se los asigno al texto de la etiqueta <span>
     countContentCart.textContent = countObject
     if (countContentCart.classList.contains('viewNotContentCart') && countContentCart >= 1){
