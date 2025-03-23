@@ -640,7 +640,9 @@ footer > span{
         display: none;
         transition:  opacity 300ms;
     }
-
+    .nosotros-card > h1{
+        padding: 0 15px;
+    }
 
 }
 /* Media query para laptop */
