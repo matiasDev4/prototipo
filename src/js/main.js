@@ -9,9 +9,24 @@ const modalCart = document.querySelector("#carritoModal")
 const countContentCart = document.getElementById("countContentCart")
 const opcionesNav = nav.querySelectorAll('li')
 
+const contentDetalles = document.querySelector('.contentDetalles')
+
+const buttonArticulo = document.querySelector('#articulos')
+const modalDetalles = document.querySelector('.modalDetalles')
+const toastMessage = document.querySelector('.toastMessage')
+
 let ExistingToCart = false
 let carrito = []
 
+const Toast = (viewToast) =>{
+    
+    if (viewToast){
+        toastMessage.classList.remove('hiddenToast')
+        setTimeout(()=>{
+            toastMessage.classList.add('hiddenToast') 
+            viewToast = false}, 4000)
+    }
+}
 
 
 //array con articulos
@@ -82,15 +97,46 @@ document.addEventListener('click', (e) =>{
         document.body.style.overflow = 'auto';
     }
 
+    if(!modalDetalles.classList.contains('ocultarDetalles') && !contentDetalles.contains(e.target)){
+        modalDetalles.classList.add('ocultarDetalles')
+        document.body.style.overflow = 'auto';
+    }
+
 })
+
+contentDetalles.addEventListener('click', (e) =>{
+    e.stopPropagation()
+    const addToCartButton = e.target.closest('.agregarCarrito')
+    const payNowButton = e.target.closest('.comprarAhora')
+
+    if(addToCartButton){
+        addCart(articulos[addToCartButton.id])
+        viewCart()
+        Toast(true)
+    }
+})
+
+
+
+buttonArticulo.addEventListener('click', (e)=>{
+    e.stopPropagation()
+    const cardDetails = e.target.closest('.card')
+    console.log(cardDetails)
+    if (cardDetails){
+        modalDetalles.classList.remove('ocultarDetalles')
+        document.body.style.overflow = 'hidden';
+        mostrarDetalles(articulos[cardDetails.id])
+
+    }
+})
+
+
 
 btnCartContent.addEventListener('click', (e) =>{
     e.stopPropagation()
     cartModal.classList.remove("ocultarCarrito")
     document.body.style.overflow = 'hidden';
 })
-
-
 
 menuOpen.addEventListener('click', ()=>{
     const expanded = menuOpen.getAttribute('aria-expanded') === 'true' || 'false'
@@ -137,6 +183,7 @@ const mostrarFiltro = () => {
         let div = document.createElement('div');
 
         div.classList.add("card");
+        div.id = items.id
 
         div.innerHTML = `
                 <div class="header-card">
@@ -147,14 +194,7 @@ const mostrarFiltro = () => {
                         </div>
                 </div>
                 <div class="descripcion-card">
-                    <p>${items.descripcion}</p>
-                </div>
-                <div class="cart-content"> 
-                    <button class="btnCart" id="${items.id}" ${items.stock <= 1 ? "disabled" : ""}>
-                    ${items.stock <= 1 ? "deshabilitado" : "Agregar"}
-                        <span><i class="bi bi-cart-plus-fill"></i></span>
-                    </button>
-                    <span class="${items.stock >= 1 ? "conStock" : "sinStock"}">stock: ${items.stock}</span>
+                    <p>Ver detalles!</p>
                 </div>
                 `;
 
@@ -181,6 +221,44 @@ const mostrarFiltro = () => {
 
       
     
+}
+
+const mostrarDetalles = (articulo) =>{
+    const articuloFind = articulos.filter(item => item.id === articulo.id)
+    contentDetalles.innerHTML = ""
+
+    articuloFind.forEach(item => {
+        const precioFormateado = new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: 'ARS', 
+          }).format(item.precio);
+        contentDetalles.innerHTML = `
+        <div class="imgDetalles">
+                <img src="/public/assets/${item.img}" alt="">
+                <div class="headerDetalles">
+                    <div>
+                        <h1>${item.titulo}</h1>
+                        <span>${precioFormateado.replace(",00","")}</span>
+                    </div>
+                    <div>
+                        <h4>Stock: <span>${item.stock}</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="bodyDetalles">
+                <div>
+                    <h4>Detalles</h4>
+                    <div>
+                        <p>${item.descripcion}</p>
+                    </div>
+                </div>
+                <div class="bodyButtons">
+                    <button class="comprarAhora" id="${item.id}">Comprar ahora</button>
+                    <button class="agregarCarrito" id="${item.id}">Agregar al carrito</button>
+                </div>
+            </div>`
+        
+    })
 }
 
 //funcion para agregar losa articulos al array
