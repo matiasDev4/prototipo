@@ -234,7 +234,7 @@ const mostrarDetalles = (articulo) =>{
           }).format(item.precio);
         contentDetalles.innerHTML = `
         <div class="imgDetalles">
-                <img src="/public/assets/${item.img}" alt="">
+                <img src="public/assets/${item.img}" alt="name">
                 <div class="headerDetalles">
                     <div>
                         <h1>${item.titulo}</h1>
