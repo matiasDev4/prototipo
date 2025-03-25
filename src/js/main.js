@@ -17,6 +17,9 @@ const toastMessage = document.querySelector('.toastMessage')
 
 const totalCarrito = document.querySelector('#total')
 const cerrarCarrito = document.querySelector('#cerrarCarrito')
+
+
+
 let ExistingToCart = false
 let carrito = []
 
@@ -116,11 +119,17 @@ contentDetalles.addEventListener('click', (e) =>{
         viewCart()
         Toast(true)
     }
+    if(payNowButton){
+        alert("Gracias por tu compra!")
+    }
 })
+
+
 
 cerrarCarrito.addEventListener('click',(e)=>{
     e.stopPropagation()
     cartModal.classList.add('ocultarCarrito')
+    document.body.style.overflow = 'auto';
 })
 
 buttonArticulo.addEventListener('click', (e)=>{
